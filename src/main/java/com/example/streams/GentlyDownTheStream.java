@@ -57,7 +57,7 @@ public class GentlyDownTheStream {
                     .sorted()
                     .limit(2)
                     .collect(Collectors.toList());
-        } catch (EmptyCollectionException e) {
+        } catch (InvalidDataException e) {
             throw e;
         } catch (Exception e) {
             throw new InvalidDataException("Failed to retrieve first two sorted fruits: " + e.getMessage());
@@ -95,7 +95,7 @@ public class GentlyDownTheStream {
                     .filter(Objects::nonNull)
                     .sorted(Comparator.reverseOrder())
                     .collect(Collectors.toList());
-        } catch (EmptyCollectionException e) {
+        } catch (InvalidDataException e) {
             throw e;
         } catch (Exception e) {
             throw new InvalidDataException("Failed to reverse-sort veggies: " + e.getMessage());
@@ -110,9 +110,9 @@ public class GentlyDownTheStream {
             return veggies.stream()
                     .filter(Objects::nonNull)
                     .sorted(Comparator.reverseOrder())
-                    .map(String::toUpperCase)
+                    .map(v -> v.toUpperCase(Locale.ROOT))
                     .collect(Collectors.toList());
-        } catch (EmptyCollectionException e) {
+        } catch (InvalidDataException e) {
             throw e;
         } catch (Exception e) {
             throw new InvalidDataException("Failed to reverse-sort veggies in upper case: " + e.getMessage());
@@ -129,7 +129,7 @@ public class GentlyDownTheStream {
                     .sorted(Comparator.reverseOrder())
                     .limit(10)
                     .collect(Collectors.toList());
-        } catch (EmptyCollectionException e) {
+        } catch (InvalidDataException e) {
             throw e;
         } catch (Exception e) {
             throw new InvalidDataException("Failed to retrieve top ten values: " + e.getMessage());
@@ -148,7 +148,7 @@ public class GentlyDownTheStream {
                     .distinct()
                     .limit(10)
                     .collect(Collectors.toList());
-        } catch (EmptyCollectionException e) {
+        } catch (InvalidDataException e) {
             throw e;
         } catch (Exception e) {
             throw new InvalidDataException("Failed to retrieve top ten unique values: " + e.getMessage());
@@ -168,7 +168,7 @@ public class GentlyDownTheStream {
                     .filter(n -> n % 2 != 0)
                     .limit(10)
                     .collect(Collectors.toList());
-        } catch (EmptyCollectionException e) {
+        } catch (InvalidDataException e) {
             throw e;
         } catch (Exception e) {
             throw new InvalidDataException("Failed to retrieve top ten unique odd values: " + e.getMessage());
@@ -195,7 +195,7 @@ public class GentlyDownTheStream {
     }
 
     // Generic method for safe collection operations
-    private <T> void validateCollection(Collection<T> collection, String collectionName) throws EmptyCollectionException {
+    private <T> void validateCollection(Collection<T> collection, String collectionName) {
         if (collection == null) {
             throw new IllegalArgumentException(collectionName + " cannot be null");
         }
